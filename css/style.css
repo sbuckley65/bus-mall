@@ -1,0 +1,9 @@
+img {
+  border: solid;
+  margin: 100px;
+}
+
+.image-container {
+  display: flex;
+  justify-content: space-around;
+}
