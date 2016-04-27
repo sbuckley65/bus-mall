@@ -1,8 +1,12 @@
 var allProducts = ['bag','banana','bathroom','boots','breakfast','bubblegum','chair','cthulhu','dog-duck','dragon','pen','pet-sweep','scissors','shark','sweep','tauntaun','unicorn','usb','water-can','wine-glass'];
 
 var displayImage = document.getElementById('image-container');
+var giveMore = document.getElementById('give-more');
+var summary = document.getElementById('summary');
+var loopCount = 5;
 
 function ProductInfo(imgFileName) {
+  this.name = imgFileName;
   this.imgFileName = 'images/' + imgFileName + '.png';
   this.shown = 0;
   this.clickCount = 0;
@@ -28,16 +32,6 @@ function randomProductInfo() {
 
 function generateThreeRandomProducts() {
   displayImage.innerHTML = '';
-  // var children = displayImage.children;
-  // if(children.length){
-  //   console.log('children length', children);
-  //   for(var j = 0; j < 3; j++){
-  //     children[j].remove();
-  //     console.log('removed child', children[j]);
-  //   }
-  // }
-    ///////////////////////
-
   var threeRandomProducts = [];
   var random1 = randomProductInfo();
   var random2 = randomProductInfo();
@@ -54,24 +48,36 @@ function generateThreeRandomProducts() {
   threeRandomProducts.push(random3);    //displays 3 images
 
   for (i = 0; i < 3; i++) {
-    // var clearDiv = displayImage.innerhtml;
-    // clearDiv = '';
-    // displayImage.innerHTML = ' ';
     var imgEl = document.createElement('img');
     imgEl.src = threeRandomProducts[i].imgFileName;
+    imgEl.id = threeRandomProducts[i].name;
     displayImage.appendChild(imgEl);
-    productInfos[i].shown++;
+    threeRandomProducts[i].shown++;
   }
 }
 
 function newVoteHandler(event) {
-  console.log('click recognized');
-  for (var i = 0; i < productInfos.length; i++) {
-    if (event.target.id === productInfos[i].imageFileName) {
-      productInfos[i].clickCount++;
+  console.log('id is' + event.target.id);
+  loopCount--;
+  if (loopCount === 0) {
+    console.log('show buttons to get a new target id');
+  } else if (event.target.id === giveMore.id) {
+    loopCount = 2;
+    console.log('looping 10 more times');
+    generateThreeRandomProducts();
+  } else if (event.target.id === summary.id) {
+    console.log('showing summary');
+  } else {
+    console.log('show images and process clicks');
+    console.log('target id = ' + event.target.id);
+    for (var i = 0; i < productInfos.length; i++) {
+      if (event.target.id === productInfos[i].name) {
+        productInfos[i].clickCount++;
+      }
     }
+    generateThreeRandomProducts();
   }
-  generateThreeRandomProducts();
+  console.table(productInfos);
   console.log('one event');
 }
 
@@ -79,4 +85,7 @@ generateThreeRandomProducts();
 
 displayImage.addEventListener('click', newVoteHandler);
 
-console.log(productInfos);
+function createButtons() {
+  giveMore.addEventListener('click', newVoteHandler);
+  summary.addEventListener('click', newVoteHandler);
+}
