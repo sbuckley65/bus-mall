@@ -1,8 +1,7 @@
 var allProducts = ['bag','banana','bathroom','boots','breakfast','bubblegum','chair','cthulhu','dog-duck','dragon','pen','pet-sweep','scissors','shark','sweep','tauntaun','unicorn','usb','water-can','wine-glass'];
 
 var displayImage = document.getElementById('image-container');
-var giveMore = document.getElementById('give-more');
-var summary = document.getElementById('summary');
+var displayButtons = document.getElementById('button-container');
 var loopCount = 5;
 
 function ProductInfo(imgFileName) {
@@ -57,16 +56,19 @@ function generateThreeRandomProducts() {
 }
 
 function newVoteHandler(event) {
-  console.log('id is' + event.target.id);
+  console.log('id is ' + event.target.id);
   loopCount--;
   if (loopCount === 0) {
+    createButtons();
     console.log('show buttons to get a new target id');
-  } else if (event.target.id === giveMore.id) {
+  } else if (event.target.id === 'give-more') {
     loopCount = 2;
     console.log('looping 10 more times');
+    displayButtons.innerHTML = '';
     generateThreeRandomProducts();
-  } else if (event.target.id === summary.id) {
+  } else if (event.target.id === 'summary') {
     console.log('showing summary');
+    displayButtons.innerHTML = '';// remove buttons
   } else {
     console.log('show images and process clicks');
     console.log('target id = ' + event.target.id);
@@ -81,11 +83,22 @@ function newVoteHandler(event) {
   console.log('one event');
 }
 
+function createButtons() {
+  console.log('create buttons');
+  displayImage.innerHTML = ''; // remove pictures
+  var buttonElOne = document.createElement('button');
+  var buttonElTwo = document.createElement('button');
+  buttonElOne.id = 'give-more';  //returning IDs to newVoteHandler
+  buttonElTwo.id = 'summary';
+  var text1 = document.createTextNode('Give me more!');
+  var text2 = document.createTextNode('Summary');
+  buttonElOne.appendChild(text1);
+  buttonElTwo.appendChild(text2);
+  displayButtons.appendChild(buttonElOne);
+  displayButtons.appendChild(buttonElTwo);
+  displayButtons.addEventListener('click', newVoteHandler);
+}
+
 generateThreeRandomProducts();
 
 displayImage.addEventListener('click', newVoteHandler);
-
-function createButtons() {
-  giveMore.addEventListener('click', newVoteHandler);
-  summary.addEventListener('click', newVoteHandler);
-}
