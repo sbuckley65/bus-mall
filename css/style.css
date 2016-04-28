@@ -1,3 +1,19 @@
+h1 {
+  display: flex;
+  justify-content: center;
+}
+
+h2 {
+}
+main {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
+  flex-direction: column-reverse;
+  flex-flow: wrap-reverse;
+  flex-wrap: nowrap;
+}
+
 img {
   border: solid;
   margin: 75px;
